@@ -1,0 +1,37 @@
+def character_stuffing(data, flag_character, escape_character):
+    
+    stuffed_data = flag_character
+    for char in data:
+        if char == flag_character or char == escape_character:
+            stuffed_data += escape_character + char
+        else:
+            stuffed_data += char
+    stuffed_data += flag_character
+    return stuffed_data
+
+def character_destuffing(data, flag_character, escape_character):
+    
+    destuffed_data = ""
+    escape_next = False
+    for char in data:
+        if not escape_next:
+            if char == escape_character:
+                escape_next = True
+            elif char == flag_character:
+                break  # End of frame reached
+            else:
+                destuffed_data += char
+        else:
+            destuffed_data += char
+            escape_next = False
+    return destuffed_data
+
+# Example usage:
+data_stream = "AAB*D*EEE*FF*"
+flag_char = "*"
+escape_char = "D"
+stuffed_data = character_stuffing(data_stream, flag_char, escape_char)
+print("Stuffed data:", stuffed_data)
+
+destuffed_data = character_destuffing(stuffed_data, flag_char, escape_char)
+print("Destuffed data:", destuffed_data)

@@ -1,0 +1,37 @@
+def byte_stuffing(data, flag_byte, escape_byte):
+    
+    stuffed_data = [flag_byte]
+    for byte in data:
+        if byte == flag_byte or byte == escape_byte:
+            stuffed_data.extend([escape_byte, byte])
+        else:
+            stuffed_data.append(byte)
+    stuffed_data.append(flag_byte)
+    return stuffed_data
+
+def byte_destuffing(data, flag_byte, escape_byte):
+    
+    destuffed_data = []
+    escape_next = False
+    for byte in data:
+        if not escape_next:
+            if byte == escape_byte:
+                escape_next = True
+            elif byte == flag_byte:
+                break  # End of frame reached
+            else:
+                destuffed_data.append(byte)
+        else:
+            destuffed_data.append(byte)
+            escape_next = False
+    return destuffed_data
+
+# Example usage:
+data_stream = [65, 65, 66, 68, 69, 65, 69, 70, 69, 69, 70, 67, 65, 68, 65]
+flag_byte = 65  # 'A' in ASCII
+escape_byte = 66  # 'B' in ASCII
+stuffed_data = byte_stuffing(data_stream, flag_byte, escape_byte)
+print("Stuffed data:", stuffed_data)
+
+destuffed_data = byte_destuffing(stuffed_data, flag_byte, escape_byte)
+print("Destuffed data:", destuffed_data)

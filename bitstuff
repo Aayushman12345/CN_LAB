@@ -1,0 +1,44 @@
+def bit_stuffing(data):
+    
+    stuffed_data = []
+    count = 0
+
+    for bit in data:
+        stuffed_data.append(bit)
+        if bit == 1:
+            count += 1
+        else:
+            count = 0
+
+        if count == 5:
+            # Stuff a 0 bit after 5 consecutive 1 bits
+            stuffed_data.append(0)
+            count = 0
+
+    return stuffed_data
+
+def bit_destuffing(data):
+   
+    destuffed_data = []
+    count = 0
+
+    for bit in data:
+        destuffed_data.append(bit)
+        if bit == 1:
+            count += 1
+            if count == 5:
+                # Skip the stuffed 0 bit
+                count = 0
+                continue
+        else:
+            count = 0
+
+    return destuffed_data
+
+# Example usage:
+data_stream = [1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1]
+stuffed_data = bit_stuffing(data_stream)
+print("Stuffed data:", stuffed_data)
+
+destuffed_data = bit_destuffing(stuffed_data)
+print("Destuffed data:", destuffed_data)

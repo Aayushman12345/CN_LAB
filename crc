@@ -1,0 +1,29 @@
+def crc_remainder(data, divisor):
+   
+    # Append 0s to the data to match the length of the divisor
+    data += '0' * (len(divisor) - 1)
+    # Convert data and divisor to lists for easier manipulation
+    data = list(data)
+    divisor = list(divisor)
+    # Perform CRC division
+    while '1' in data[:len(data) - len(divisor) + 1]:
+        # Find the next '1' in the data
+        index = data.index('1')
+        # Perform XOR operation
+        for i in range(len(divisor)):
+            data[index + i] = str(int(data[index + i]) ^ int(divisor[i]))
+    # Return the CRC remainder (the last len(divisor) - 1 bits)
+    return ''.join(data[-(len(divisor) - 1):])
+
+def crc_encode(data, divisor):
+    
+    # Calculate the CRC remainder
+    remainder = crc_remainder(data, divisor)
+    # Append the remainder to the original data
+    return data + remainder
+
+# Example usage:
+data_stream = '1101011011'
+divisor_poly = '1011'
+encoded_data = crc_encode(data_stream, divisor_poly)
+print("Encoded data:", encoded_data)

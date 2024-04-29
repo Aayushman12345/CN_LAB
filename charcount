@@ -1,0 +1,15 @@
+def count_characters(input_string):
+    
+    char_count = {}
+    
+    # Iterate through each character in the input string
+    for char in input_string:
+        # Increment the count of the character in the dictionary
+        char_count[char] = char_count.get(char, 0) + 1
+    
+    return char_count
+
+# Example usage:
+input_string = "Hello, world!"
+character_counts = count_characters(input_string)
+print("Character counts:", character_counts)
